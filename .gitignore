@@ -1,0 +1,12 @@
+.DS_Store
+.ycm_extra_conf.py
+.ycm_extra_conf.pyc
+compile_commands.json
+*.swp
+build
+.idea/
+xcuserdata/
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcworkspace/contents.xcworkspacedata
+WeirdCrashLogs/
