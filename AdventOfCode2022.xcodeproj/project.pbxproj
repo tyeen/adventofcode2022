@@ -27,6 +27,8 @@
 		0E892FDF296405DA000ECEA7 /* Day7.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E892FD7296405DA000ECEA7 /* Day7.swift */; };
 		0E892FE12964088C000ECEA7 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E892FE02964088C000ECEA7 /* Day.swift */; };
 		0E892FE3296408FE000ECEA7 /* Resolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E892FE2296408FE000ECEA7 /* Resolver.swift */; };
+		B1F8719929650F0500CB7CE1 /* day9.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = B1F8719829650EF900CB7CE1 /* day9.txt */; };
+		B1F8719B29650F2200CB7CE1 /* Day9.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F8719A29650F2200CB7CE1 /* Day9.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +38,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				B1F8719929650F0500CB7CE1 /* day9.txt in CopyFiles */,
 				0E892FC5296404E4000ECEA7 /* day1.txt in CopyFiles */,
 				0E892FC6296404E4000ECEA7 /* day2.txt in CopyFiles */,
 				0E892FC7296404E4000ECEA7 /* day3.txt in CopyFiles */,
@@ -71,6 +74,8 @@
 		0E892FD7296405DA000ECEA7 /* Day7.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day7.swift; sourceTree = "<group>"; };
 		0E892FE02964088C000ECEA7 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
 		0E892FE2296408FE000ECEA7 /* Resolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resolver.swift; sourceTree = "<group>"; };
+		B1F8719829650EF900CB7CE1 /* day9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = day9.txt; sourceTree = "<group>"; };
+		B1F8719A29650F2200CB7CE1 /* Day9.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day9.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +127,7 @@
 				0E892FBD296404D3000ECEA7 /* day6.txt */,
 				0E892FC1296404D3000ECEA7 /* day7.txt */,
 				0E892FC0296404D3000ECEA7 /* day8.txt */,
+				B1F8719829650EF900CB7CE1 /* day9.txt */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -137,6 +143,7 @@
 				0E892FD0296405DA000ECEA7 /* Day6.swift */,
 				0E892FD7296405DA000ECEA7 /* Day7.swift */,
 				0E892FD2296405DA000ECEA7 /* Day8.swift */,
+				B1F8719A29650F2200CB7CE1 /* Day9.swift */,
 			);
 			path = Solusion;
 			sourceTree = "<group>";
@@ -218,6 +225,7 @@
 				0E892FD8296405DA000ECEA7 /* Day6.swift in Sources */,
 				0E892FDD296405DA000ECEA7 /* Day2.swift in Sources */,
 				0E892FDF296405DA000ECEA7 /* Day7.swift in Sources */,
+				B1F8719B29650F2200CB7CE1 /* Day9.swift in Sources */,
 				0E892FD9296405DA000ECEA7 /* Day3.swift in Sources */,
 				0E892FDE296405DA000ECEA7 /* Day1.swift in Sources */,
 				0E892FCF29640517000ECEA7 /* InputReader.swift in Sources */,
@@ -344,7 +352,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = LSMPDTAPK7;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -355,7 +363,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = LSMPDTAPK7;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

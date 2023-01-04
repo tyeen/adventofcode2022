@@ -6,14 +6,15 @@
 import Foundation
 
 let resolvers: [Resolver] = [
-    Day1Resolver(),
-    Day2Resolver(),
-    Day3Resolver(),
-    Day4Resolver(),
-    Day5Resolver(),
-    Day6Resolver(),
-    Day7Resolver(),
-    Day8Resolver()
+//    Day1Resolver(),
+//    Day2Resolver(),
+//    Day3Resolver(),
+//    Day4Resolver(),
+//    Day5Resolver(),
+//    Day6Resolver(),
+//    Day7Resolver(),
+//    Day8Resolver()
+    Day9Resolver()
 ]
 
 resolvers.forEach {
