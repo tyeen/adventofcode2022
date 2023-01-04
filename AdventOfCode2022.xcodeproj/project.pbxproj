@@ -29,6 +29,8 @@
 		0E892FE3296408FE000ECEA7 /* Resolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E892FE2296408FE000ECEA7 /* Resolver.swift */; };
 		B1F8719929650F0500CB7CE1 /* day9.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = B1F8719829650EF900CB7CE1 /* day9.txt */; };
 		B1F8719B29650F2200CB7CE1 /* Day9.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F8719A29650F2200CB7CE1 /* Day9.swift */; };
+		B1F8719E2965653800CB7CE1 /* Day10.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F8719D2965653800CB7CE1 /* Day10.swift */; };
+		B1F8719F2965653F00CB7CE1 /* day10.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = B1F8719C296562BE00CB7CE1 /* day10.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,6 +40,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				B1F8719F2965653F00CB7CE1 /* day10.txt in CopyFiles */,
 				B1F8719929650F0500CB7CE1 /* day9.txt in CopyFiles */,
 				0E892FC5296404E4000ECEA7 /* day1.txt in CopyFiles */,
 				0E892FC6296404E4000ECEA7 /* day2.txt in CopyFiles */,
@@ -76,6 +79,8 @@
 		0E892FE2296408FE000ECEA7 /* Resolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resolver.swift; sourceTree = "<group>"; };
 		B1F8719829650EF900CB7CE1 /* day9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = day9.txt; sourceTree = "<group>"; };
 		B1F8719A29650F2200CB7CE1 /* Day9.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day9.swift; sourceTree = "<group>"; };
+		B1F8719C296562BE00CB7CE1 /* day10.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = day10.txt; sourceTree = "<group>"; };
+		B1F8719D2965653800CB7CE1 /* Day10.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day10.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +133,7 @@
 				0E892FC1296404D3000ECEA7 /* day7.txt */,
 				0E892FC0296404D3000ECEA7 /* day8.txt */,
 				B1F8719829650EF900CB7CE1 /* day9.txt */,
+				B1F8719C296562BE00CB7CE1 /* day10.txt */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -144,6 +150,7 @@
 				0E892FD7296405DA000ECEA7 /* Day7.swift */,
 				0E892FD2296405DA000ECEA7 /* Day8.swift */,
 				B1F8719A29650F2200CB7CE1 /* Day9.swift */,
+				B1F8719D2965653800CB7CE1 /* Day10.swift */,
 			);
 			path = Solusion;
 			sourceTree = "<group>";
@@ -217,6 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E892FB5296404A1000ECEA7 /* main.swift in Sources */,
+				B1F8719E2965653800CB7CE1 /* Day10.swift in Sources */,
 				0E892FDC296405DA000ECEA7 /* Day5.swift in Sources */,
 				0E892FDB296405DA000ECEA7 /* Day4.swift in Sources */,
 				0E892FE3296408FE000ECEA7 /* Resolver.swift in Sources */,
