@@ -38,23 +38,25 @@ struct Day12Resolver: Resolver {
     }
 
     private struct Puzzle {
-        let elevationMap: [[Int]]
         let nodes: [Node]
+        let rows: Int
+        let columns: Int
         let start: Node
         let end: Node
     }
 
     func resolve(input: String) {
         let puzzle = parseInput(input)
-
         resolvePart1(puzzle: puzzle)
+
+        let puzzle2 = parseInput(input)
+        resolvePart2(puzzle: puzzle2)
     }
 
     private func resolvePart1(puzzle: Puzzle) {
-        let elevationMap = puzzle.elevationMap
         let nodes = puzzle.nodes
-        let rows = elevationMap.count
-        let columns = elevationMap.first!.count
+        let rows = puzzle.rows
+        let columns = puzzle.columns
 
         let startPosition = puzzle.start
         let endPosition = puzzle.end
@@ -123,6 +125,79 @@ struct Day12Resolver: Resolver {
         print("Part1: steps: \(target.distance)")
     }
 
+    private func resolvePart2(puzzle: Puzzle) {
+        let rows = puzzle.rows
+        let columns = puzzle.columns
+        let nodes = puzzle.nodes
+
+        let startPosition = puzzle.end
+        startPosition.distance = 0
+        puzzle.start.distance = .max
+
+        var processingQueue = [startPosition]
+        var visitedNodes = Set<Node>()
+        var target = startPosition
+
+        while !processingQueue.isEmpty {
+            let current = processingQueue.removeFirst()
+            if current.elevation == 0 {
+                target = current
+                break
+            }
+
+            visitedNodes.insert(current)
+
+            let top: Node? = current.row > 0
+            ? nodes.first(where: { $0.row == current.row - 1 && $0.column == current.column })
+            : nil
+            let bottom = current.row < rows - 1
+            ? nodes.first(where: { $0.row == current.row + 1 && $0.column == current.column })
+            : nil
+            let left = current.column > 0
+            ? nodes.first(where: { $0.row == current.row && $0.column == current.column - 1 })
+            : nil
+            let right = current.column < columns - 1
+            ? nodes.first(where: { $0.row == current.row && $0.column == current.column + 1 })
+            : nil
+
+            let candidates = [top, bottom, left, right].compactMap { candidate in
+                if let node = candidate, node.elevation >= current.elevation - 1 {
+                    return node
+                } else {
+                    return nil
+                }
+            }
+            for candidate in candidates {
+                if let visited = visitedNodes.first(where: { $0 == candidate }),
+                    visited.distance <= candidate.distance {
+                    continue
+                }
+
+                if candidate.distance > current.distance + 1 {
+                    candidate.distance = current.distance + 1
+                }
+
+                candidate.previous = current
+                if let pendingIdx = processingQueue.firstIndex(of: candidate) {
+                    processingQueue[pendingIdx] = candidate
+                } else {
+                    processingQueue.append(candidate)
+                }
+            }
+        }
+
+//        var iterator: Node? = target
+//        var steps = ""
+//        while let node = iterator, node != startPosition {
+//            steps = " -> (\(node.column), \(node.row))" + steps
+//
+//            iterator = iterator?.previous
+//        }
+//        steps = "(\(startPosition.row), \(startPosition.column))" + steps
+//        print("steps: \(steps)")
+        print("Part2: steps: \(target.distance)")
+    }
+
     private func parseInput(_ input: String) -> Puzzle {
         let lines = input.split(separator: "\n")
 
@@ -131,7 +206,6 @@ struct Day12Resolver: Resolver {
         let indexMap = Dictionary(
             uniqueKeysWithValues: "abcdefghijklmnopqrstuvwxyz".enumerated().map { ($1, $0) }
         )
-        var elevationMap = [[Int]](repeating: [Int](repeating: 0, count: columns), count: rows)
         var nodes = [Node]()
         var startPosition = Node(row: 0, column: 0, elevation: 0, distance: 0)
         var endPosition = startPosition
@@ -140,7 +214,6 @@ struct Day12Resolver: Resolver {
                 let elevation: Int
                 if let index = indexMap[ch] {
                     elevation = index
-                    elevationMap[row][column] = elevation
                 } else if ch == "S" {
                     elevation = indexMap["a"]!
                     startPosition = Node(row: row, column: column, elevation: elevation, distance: 0)
@@ -150,11 +223,10 @@ struct Day12Resolver: Resolver {
                 } else {
                     continue
                 }
-                elevationMap[row][column] = elevation
                 let node = Node(row: row, column: column, elevation: elevation, distance: .max)
                 nodes.append(node)
             }
         }
-        return Puzzle(elevationMap: elevationMap, nodes: nodes, start: startPosition, end: endPosition)
+        return Puzzle(nodes: nodes, rows: rows, columns: columns, start: startPosition, end: endPosition)
     }
 }
