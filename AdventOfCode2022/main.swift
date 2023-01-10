@@ -16,7 +16,8 @@ let resolvers: [Resolver] = [
 //    Day8Resolver(),
 //    Day9Resolver(),
 //    Day10Resolver(),
-    Day11Resolver()
+//    Day11Resolver(),
+    Day12Resolver()
 ]
 
 resolvers.forEach {
