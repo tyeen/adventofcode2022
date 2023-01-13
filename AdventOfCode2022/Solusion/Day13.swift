@@ -61,14 +61,16 @@ struct Day13Resolver: Resolver {
             firstDivider, secondDivider
         ]
 
-        let sorted = packets.sorted { lhs, rhs in
-            switch comparePacket(left: lhs, right: rhs) {
-            case .isEqual:
-                return false
-            case .isInRightOrder(let isRightOrder):
-                return isRightOrder
-            }
-        }
+//        let sorted = packets.sorted { lhs, rhs in
+//            switch comparePacket(left: lhs, right: rhs) {
+//            case .isEqual:
+//                return false
+//            case .isInRightOrder(let isRightOrder):
+//                return isRightOrder
+//            }
+//        }
+        var sorted = packets
+        quickSort(packets: &sorted, start: 0, end: packets.endIndex - 1)
 
         // Well, just a little hack. Use the string description as the key to search :)
         let stringified = sorted.map { $0.description }
@@ -81,6 +83,38 @@ struct Day13Resolver: Resolver {
                 decoderKey=\((firstDividerIdx + 1) * (secondDividerIdx + 1))
                 """)
         }
+    }
+
+    private func quickSort(packets: inout [Packet], start: Int, end: Int) {
+        guard start < end else {
+            return
+        }
+
+        let mid = partition(packets: &packets, start: start, end: end)
+        quickSort(packets: &packets, start: start, end: mid - 1)
+        quickSort(packets: &packets, start: mid + 1, end: end)
+    }
+
+    private func partition(packets: inout [Packet], start: Int, end: Int) -> Int {
+        let pivot = packets[end]
+        var pivotIdx = end
+        var i = start
+        while i < pivotIdx {
+            switch comparePacket(left: packets[i], right: pivot) {
+            case .isEqual:
+                continue
+            case .isInRightOrder(let isRightOrder):
+                if !isRightOrder {
+                    let packet = packets.remove(at: i)
+                    packets.insert(packet, at: end)
+                    pivotIdx -= 1
+                    i -= 1
+                }
+            }
+
+            i += 1
+        }
+        return pivotIdx
     }
 
     private enum ComparisionResult {
