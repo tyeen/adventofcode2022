@@ -31,6 +31,7 @@ struct Day13Resolver: Resolver {
         let pairs = parseInput(input)
 
         resolvePart1(pairs: pairs)
+        resolvePart2(pairs: pairs)
     }
 
     private func resolvePart1(pairs: [PacketPair]) {
@@ -47,10 +48,39 @@ struct Day13Resolver: Resolver {
         }
         var sum = 0
         rightOrders.forEach { rightOrderItem in
-            print("pair \(rightOrderItem.1): \(rightOrderItem.0)")
+//            print("pair \(rightOrderItem.1): \(rightOrderItem.0)")
             sum += rightOrderItem.1
         }
         print("Part 1: \(sum)")
+    }
+
+    private func resolvePart2(pairs: [PacketPair]) {
+        let firstDivider = Packet.sequence([.sequence([.element(2)])])
+        let secondDivider = Packet.sequence([.sequence([.element(6)])])
+        let packets = pairs.map { [$0.left, $0.right] }.flatMap { $0 } + [
+            firstDivider, secondDivider
+        ]
+
+        let sorted = packets.sorted { lhs, rhs in
+            switch comparePacket(left: lhs, right: rhs) {
+            case .isEqual:
+                return false
+            case .isInRightOrder(let isRightOrder):
+                return isRightOrder
+            }
+        }
+
+        // Well, just a little hack. Use the string description as the key to search :)
+        let stringified = sorted.map { $0.description }
+        if let firstDividerIdx = stringified.firstIndex(where: { $0 == firstDivider.description }),
+           let secondDividerIdx = stringified.firstIndex(where: { $0 == secondDivider.description }) {
+            print("""
+                Part 2: \
+                firstDividerIndex=\(firstDividerIdx), \
+                secondDivierIndex=\(secondDividerIdx), \
+                decoderKey=\((firstDividerIdx + 1) * (secondDividerIdx + 1))
+                """)
+        }
     }
 
     private enum ComparisionResult {
@@ -65,10 +95,8 @@ struct Day13Resolver: Resolver {
             res = compareSequences(left: sequenceLeft, right: sequenceRight)
         case (.element(let elementLeft), .element(let elementRight)):
             if elementLeft == elementRight {
-                print("  \(elementLeft) == \(elementRight), continue")
                 res = .isEqual
             } else {
-                print("  return result of \(elementLeft) < \(elementRight)\n")
                 res = .isInRightOrder(elementLeft < elementRight)
             }
         case (.element(let elementLeft), .sequence(let sequenceRight)):
@@ -82,21 +110,17 @@ struct Day13Resolver: Resolver {
     }
 
     private func compareSequences(left: [Packet], right: [Packet]) -> ComparisionResult {
-        print("compare seq: \(left), \(right)")
         if left.isEmpty && !right.isEmpty {
-            print("  left is empty, right order\n")
             return .isInRightOrder(true)
         }
 
         if !left.isEmpty && right.isEmpty {
-            print("  right is empty, not in right order\n")
             return .isInRightOrder(false)
         }
 
         var idx = 0
         while idx < left.count {
             if idx >= right.count {
-                print("  right runs out, but left still counting, false\n")
                 return .isInRightOrder(false)
             }
 
