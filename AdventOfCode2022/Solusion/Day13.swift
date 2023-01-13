@@ -29,9 +29,87 @@ struct Day13Resolver: Resolver {
 
     func resolve(input: String) {
         let pairs = parseInput(input)
-        pairs.forEach {
-            print($0)
+
+        resolvePart1(pairs: pairs)
+    }
+
+    private func resolvePart1(pairs: [PacketPair]) {
+        var rightOrders = [(PacketPair, Int)]()
+        for (idx, pair) in pairs.enumerated() {
+            switch comparePacket(left: pair.left, right: pair.right) {
+            case .isEqual:
+                continue
+            case .isInRightOrder(let isRightOrder):
+                if isRightOrder {
+                    rightOrders.append((pair, idx + 1))
+                }
+            }
         }
+        var sum = 0
+        rightOrders.forEach { rightOrderItem in
+            print("pair \(rightOrderItem.1): \(rightOrderItem.0)")
+            sum += rightOrderItem.1
+        }
+        print("Part 1: \(sum)")
+    }
+
+    private enum ComparisionResult {
+        case isInRightOrder(Bool)
+        case isEqual
+    }
+
+    private func comparePacket(left: Packet, right: Packet) -> ComparisionResult {
+        let res: ComparisionResult
+        switch (left, right) {
+        case (.sequence(let sequenceLeft), .sequence(let sequenceRight)):
+            res = compareSequences(left: sequenceLeft, right: sequenceRight)
+        case (.element(let elementLeft), .element(let elementRight)):
+            if elementLeft == elementRight {
+                print("  \(elementLeft) == \(elementRight), continue")
+                res = .isEqual
+            } else {
+                print("  return result of \(elementLeft) < \(elementRight)\n")
+                res = .isInRightOrder(elementLeft < elementRight)
+            }
+        case (.element(let elementLeft), .sequence(let sequenceRight)):
+            let leftPromoted = [Packet.element(elementLeft)]
+            res = compareSequences(left: leftPromoted, right: sequenceRight)
+        case (.sequence(let sequenceLeft), .element(let elementRight)):
+            let rightPromoted = [Packet.element(elementRight)]
+            res = compareSequences(left: sequenceLeft, right: rightPromoted)
+        }
+        return res
+    }
+
+    private func compareSequences(left: [Packet], right: [Packet]) -> ComparisionResult {
+        print("compare seq: \(left), \(right)")
+        if left.isEmpty && !right.isEmpty {
+            print("  left is empty, right order\n")
+            return .isInRightOrder(true)
+        }
+
+        if !left.isEmpty && right.isEmpty {
+            print("  right is empty, not in right order\n")
+            return .isInRightOrder(false)
+        }
+
+        var idx = 0
+        while idx < left.count {
+            if idx >= right.count {
+                print("  right runs out, but left still counting, false\n")
+                return .isInRightOrder(false)
+            }
+
+            let res = comparePacket(left: left[idx], right: right[idx])
+            switch res {
+            case .isEqual:
+                idx += 1
+            case .isInRightOrder(_):
+                return res
+            }
+        }
+
+        return idx == right.count ? .isEqual : .isInRightOrder(idx < right.count)
     }
 
     private func parseInput(_ input: String) -> [PacketPair] {
@@ -39,44 +117,49 @@ struct Day13Resolver: Resolver {
         var ret = [PacketPair]()
         for pairs in packetsPairs {
             let packets = pairs.split(separator: "\n").map(String.init)
-            print("parse pairs: \(packets)")
             guard packets.count == 2,
-                  let left = parsePacket(packet: packets[0]),
-                  let right = parsePacket(packet: packets[1])
+                  let (left, _) = parsePacket(packet: packets[0]),
+                  let (right, _) = parsePacket(packet: packets[1])
             else { continue }
             ret.append(PacketPair(left: left, right: right))
         }
         return ret
     }
 
-    private func parsePacket(packet: String) -> Packet? {
-        let stripped = packet.dropFirst().dropLast()
+    private func parsePacket(packet: String) -> (Packet, Int)? {
+        guard let startBracket = packet.first, startBracket == "[" else { return nil }
+
         var currentPacket = [Packet]()
-        let parts = stripped.split(separator: ",")
-        print("start parse packet: \(stripped)")
-        for part in parts {
-            print("parse packet part: \(part)")
-            if part.starts(with: "["), let innerPacket = parsePacket(packet: String(part)) {
-                currentPacket.append(innerPacket)
-            } else if let num = Int(part) {
-                currentPacket.append(.element(num))
+        // Skip the start [
+        var idx = packet.index(after: packet.startIndex)
+        var consumedCount = 1
+
+        while idx < packet.endIndex {
+            if packet[idx] == "[" {
+                if let (subPacket, consumed) = parsePacket(packet: String(packet[idx...])) {
+                    currentPacket.append(subPacket)
+                    consumedCount += consumed
+                    idx = packet.index(idx, offsetBy: consumed)
+                }
+            } else if packet[idx].wholeNumberValue != nil {
+                var numCount = 0
+                var numStr = ""
+                while packet[idx].isNumber {
+                    numStr += String(packet[idx])
+                    numCount += 1
+                    idx = packet.index(after: idx)
+                }
+                currentPacket.append(.element(Int(numStr)!))
+                consumedCount += numCount
+            } else if packet[idx] == "]" {
+                consumedCount += 1
+                break
+            } else {
+                consumedCount += 1
+                idx = packet.index(after: idx)
             }
         }
-        print("end parse packet: \(stripped)")
-        print("")
-        return Packet.sequence(currentPacket)
-    }
 
-    private func parseElement(element: String) -> Int? {
-//        var ret = 0
-//        for (idx, ch) in element.enumerated() {
-//            if let n = ch.wholeNumberValue {
-//                ret += n * pow(10, idx)
-//            } else {
-//                return nil
-//            }
-//        }
-//        return ret
-        Int(element)
+        return (Packet.sequence(currentPacket), consumedCount)
     }
 }
